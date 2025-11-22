@@ -18,7 +18,7 @@ export function AboutSection() {
     const ctx = gsap.context(() => {
       if (imageRef.current) {
         gsap.from(imageRef.current, {
-          x: -100,
+          y: -100,
           opacity: 0,
           duration: 1,
           ease: "power3.out",
@@ -32,7 +32,7 @@ export function AboutSection() {
 
       if (contentRef.current) {
         gsap.from(contentRef.current.children, {
-          x: 100,
+          y: 100,
           opacity: 0,
           duration: 0.8,
           stagger: 0.15,

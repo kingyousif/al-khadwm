@@ -1,6 +1,6 @@
 "use client";
 
-import { Zap, Cpu, Cog, Gauge } from "lucide-react";
+import { Zap, Cpu, Cog, Gauge, Droplet } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -48,29 +48,36 @@ export function ServicesSection() {
   }, []);
   const services = [
     {
-      icon: Zap,
+      icon: Droplet,
       number: "01",
+      title: "Aviation Fuel Services",
+      description:
+        "Complete aviation fueling solutions including fuel supply, storage, quality control, and refueling operations for all aircraft types",
+    },
+    {
+      icon: Zap,
+      number: "02",
       title: "Aircraft Ground Handling",
       description:
         "Comprehensive aircraft servicing, marshalling, and ground operations for safe and efficient airport operations",
     },
     {
       icon: Cpu,
-      number: "02",
+      number: "03",
       title: "Baggage & Cargo Handling",
       description:
         "Professional baggage handling systems and cargo operations with state-of-the-art equipment",
     },
     {
       icon: Cog,
-      number: "03",
+      number: "04",
       title: "Ground Support Equipment",
       description:
         "Supply, maintenance, and operation of all types of ground support equipment for airports",
     },
     {
       icon: Gauge,
-      number: "04",
+      number: "05",
       title: "Passenger Services",
       description:
         "Complete passenger handling services including check-in, boarding, and assistance 24/7",
@@ -91,10 +98,11 @@ export function ServicesSection() {
 
         <div
           ref={servicesRef}
-          className="grid md:grid-cols-2 lg:grid-cols-4 gap-8"
+          className="grid md:grid-cols-2 lg:grid-cols-5 gap-8"
         >
           {services.map((service, index) => {
             const serviceImages = [
+              "/Aviation-Refueling-Hose-750x430.jpg",
               "/Aircraft_Ground_Handling-1024x552.jpg",
               "/Malaysia-Airlines-Lost-Baggage.jpg",
               "/commercial-passenger-airplane-push-back-operation-211851194.jpg",
@@ -103,21 +111,22 @@ export function ServicesSection() {
             return (
               <div key={index} className="text-center group cursor-pointer">
                 <div className="relative mb-6">
-                  <div className="w-48 h-48 mx-auto rounded-full overflow-hidden">
+                  <div className="w-48 h-48 mx-auto rounded-full overflow-hidden relative">
                     <img
                       src={serviceImages[index]}
                       alt={service.title}
-                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all"
+                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-110"
                     />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   </div>
-                  <div className="absolute top-0 right-32 translate-x-16 w-16 h-16 rounded-full bg-[#D4AF37] text-white flex items-center justify-center text-xl font-bold">
+                  <div className="absolute top-0 right-32 translate-x-16 w-16 h-16 rounded-full bg-[#D4AF37] text-white flex items-center justify-center text-xl font-bold group-hover:scale-110 group-hover:shadow-lg transition-all duration-300">
                     {service.number}
                   </div>
                 </div>
-                <h3 className="text-xl font-semibold text-foreground mb-2">
+                <h3 className="text-xl font-semibold text-foreground mb-2 group-hover:text-[#D4AF37] transition-colors duration-300">
                   {service.title}
                 </h3>
-                <p className="text-muted-foreground text-sm">
+                <p className="text-muted-foreground text-sm group-hover:text-foreground transition-colors duration-300">
                   {service.description}
                 </p>
               </div>
