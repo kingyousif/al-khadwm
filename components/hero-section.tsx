@@ -19,21 +19,21 @@ export function HeroSection() {
 
   const slides = [
     {
-      image: "/airport-terminal-modern-architecture-with-planes.jpg",
+      image: "/modern-blue-white-commercial-airplane-parked-tarmac-with-luggage-cart-sunny-day-travel-transportation-concept-aviation-industry-flight-vacation-trip-business-travel-logistics-aircraft_163305-326263.jpg",
       title: "Your Partners In Progress",
       subtitle: "You Can Trust Us",
       description:
         "AL-KHADWM, leading provider of Airport Ground Handling Services and Ground Support Equipment Operations in the Kurdistan Region and Iraq",
     },
     {
-      image: "/airport-staff-operations-professional-team.jpg",
+      image: "/Aircraft_Ground_Handling-1024x552.jpg",
       title: "Ground Support Excellence",
       subtitle: "Industry Leaders",
       description:
         "Providing comprehensive Airport Ground Handling Services with cutting-edge Ground Support Equipment and professional expertise",
     },
     {
-      image: "/airport-terminal-modern-architecture-with-planes.jpg",
+      image: "/Airport2.61674762004fb.jpg",
       title: "Reliable Operations",
       subtitle: "Trusted Partner",
       description:

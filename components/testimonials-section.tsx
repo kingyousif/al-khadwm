@@ -55,7 +55,7 @@ export function TestimonialsSection() {
         "Al-KHADWM's ground handling services are exceptional. Their team is professional, efficient, and always on time. The ground support equipment is well-maintained and reliable. We've been working with them for years and they consistently exceed our expectations.",
       name: "Ahmed Hassan",
       role: "Airport Operations Manager",
-      image: "/customer-1.jpg",
+      image: "/istockphoto-1202298056-612x612.jpg",
       imageQuery: "professional business person headshot portrait",
     },
     {
@@ -63,7 +63,7 @@ export function TestimonialsSection() {
         "The quality of service at Al-KHADWM is outstanding. Their ground handling operations are smooth, and their equipment maintenance is top-notch. They truly understand the aviation industry and deliver solutions that make our airport operations seamless.",
       name: "Sara Mohammed",
       role: "Airport Director",
-      image: "/customer-2.jpg",
+      image: "/istockphoto-152028088-612x612.jpg",
       imageQuery: "professional manager headshot portrait",
     },
     {
@@ -71,7 +71,7 @@ export function TestimonialsSection() {
         "Working with Al-KHADWM has transformed our ground operations. Their comprehensive ground support equipment and professional handling services have significantly improved our efficiency. Their 24/7 support is invaluable for airport operations.",
       name: "Khalid Ibrahim",
       role: "Aviation Services CEO",
-      image: "/customer-3.jpg",
+      image: "/e58538_936077b6fc6c49d6865195a135eeaa45~mv2.jpg",
       imageQuery: "professional CEO executive headshot portrait",
     },
   ]
@@ -95,7 +95,7 @@ export function TestimonialsSection() {
                 <div className="border-t border-border pt-4 flex items-center gap-4">
                   <div className="relative w-12 h-12 rounded-full overflow-hidden">
                     <Image
-                      src={`${testimonial.image}?height=100&width=100&query=${testimonial.imageQuery}`}
+                      src={testimonial.image}
                       alt={testimonial.name}
                       width={100}
                       height={100}

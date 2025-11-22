@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
 import { Zap, Cpu, Cog, Gauge } from "lucide-react";
-import { useEffect, useRef } from "react"
-import { gsap } from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger)
+gsap.registerPlugin(ScrollTrigger);
 
 export function ServicesSection() {
-  const sectionRef = useRef<HTMLElement>(null)
-  const titleRef = useRef<HTMLDivElement>(null)
-  const servicesRef = useRef<HTMLDivElement>(null)
+  const sectionRef = useRef<HTMLElement>(null);
+  const titleRef = useRef<HTMLDivElement>(null);
+  const servicesRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -25,7 +25,7 @@ export function ServicesSection() {
             start: "top 80%",
             toggleActions: "play none none none",
           },
-        })
+        });
       }
 
       if (servicesRef.current) {
@@ -40,12 +40,12 @@ export function ServicesSection() {
             start: "top 85%",
             toggleActions: "play none none none",
           },
-        })
+        });
       }
-    }, sectionRef)
+    }, sectionRef);
 
-    return () => ctx.revert()
-  }, [])
+    return () => ctx.revert();
+  }, []);
   const services = [
     {
       icon: Zap,
@@ -89,27 +89,40 @@ export function ServicesSection() {
           </h2>
         </div>
 
-        <div ref={servicesRef} className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {services.map((service, index) => (
-            <div key={index} className="text-center group cursor-pointer">
-              <div className="relative mb-6">
-                <div className="w-48 h-48 mx-auto rounded-full overflow-hidden">
-                  <img
-                    src={`/airport-terminal-modern-architecture-with-planes.jpg`}
-                    alt={service.title}
-                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all"
-                  />
+        <div
+          ref={servicesRef}
+          className="grid md:grid-cols-2 lg:grid-cols-4 gap-8"
+        >
+          {services.map((service, index) => {
+            const serviceImages = [
+              "/Aircraft_Ground_Handling-1024x552.jpg",
+              "/Malaysia-Airlines-Lost-Baggage.jpg",
+              "/commercial-passenger-airplane-push-back-operation-211851194.jpg",
+              "/istockphoto-152028088-612x612.jpg",
+            ];
+            return (
+              <div key={index} className="text-center group cursor-pointer">
+                <div className="relative mb-6">
+                  <div className="w-48 h-48 mx-auto rounded-full overflow-hidden">
+                    <img
+                      src={serviceImages[index]}
+                      alt={service.title}
+                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all"
+                    />
+                  </div>
+                  <div className="absolute top-0 right-32 translate-x-16 w-16 h-16 rounded-full bg-[#D4AF37] text-white flex items-center justify-center text-xl font-bold">
+                    {service.number}
+                  </div>
                 </div>
-                <div className="absolute top-4 right-1/2 translate-x-16 w-16 h-16 rounded-full bg-[#D4AF37] text-white flex items-center justify-center text-xl font-bold">
-                  {service.number}
-                </div>
+                <h3 className="text-xl font-semibold text-foreground mb-2">
+                  {service.title}
+                </h3>
+                <p className="text-muted-foreground text-sm">
+                  {service.description}
+                </p>
               </div>
-              <h3 className="text-xl font-semibold text-foreground mb-2">
-                {service.title}
-              </h3>
-              <p className="text-muted-foreground text-sm">{service.description}</p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

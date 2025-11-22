@@ -55,7 +55,7 @@ export function ProductsSection() {
       title: "Aircraft Towing Equipment",
       description:
         "High-quality aircraft tugs, pushback tractors, and towing equipment designed for safe and efficient aircraft movement on the ground.",
-      image: "/airport-terminal-modern-architecture-with-planes.jpg",
+      image: "/commercial-passenger-airplane-push-back-operation-211851194.jpg",
       imageQuery: "airport aircraft towing ground support equipment",
     },
     {
@@ -63,7 +63,7 @@ export function ProductsSection() {
       title: "Ground Power Units",
       description:
         "Reliable ground power units (GPU) and air start units (ASU) providing essential power and air conditioning for aircraft on the ground.",
-      image: "/airport-staff-operations-professional-team.jpg",
+      image: "/Aviation-Refueling-Hose-750x430.jpg",
       imageQuery: "airport ground power units equipment",
     },
     {
@@ -71,7 +71,7 @@ export function ProductsSection() {
       title: "Baggage Handling Systems",
       description:
         "Advanced baggage handling equipment including conveyor belts, baggage carts, and automated systems for efficient cargo operations.",
-      image: "/airport-terminal-modern-architecture-with-planes.jpg",
+      image: "/Malaysia-Airlines-Lost-Baggage.jpg",
       imageQuery: "airport baggage handling systems equipment",
     },
     {
@@ -79,7 +79,7 @@ export function ProductsSection() {
       title: "Passenger Boarding Bridges",
       description:
         "State-of-the-art passenger boarding bridges and mobile stairs ensuring safe and comfortable passenger boarding and disembarking.",
-      image: "/airport-terminal-modern-architecture-with-planes.jpg",
+      image: "/aircraft-prm-medical-lift-8.png",
       imageQuery: "airport passenger boarding bridge equipment",
     },
   ]
@@ -107,7 +107,7 @@ export function ProductsSection() {
             >
               <div className="relative h-48 overflow-hidden">
                 <Image
-                  src={`${product.image}?height=200&width=400&query=${product.imageQuery}`}
+                  src={product.image}
                   alt={product.title}
                   width={400}
                   height={200}

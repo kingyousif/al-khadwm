@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { ChevronLeft, ChevronRight } from "lucide-react"
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import Image from "next/image"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
@@ -21,11 +21,135 @@ export function IndustriesSection() {
     { name: "Fueling Services", image: "aircraft refueling operations" },
   ]
 
-  const [currentIndex, setCurrentIndex] = useState(0)
+  const industryImages = [
+    "/Airport2.61674762004fb.jpg",
+    "/airworthines-CAAM-750x436.jpg",
+    "/Malaysia-Airlines-Lost-Baggage.jpg",
+    "/istockphoto-152028088-612x612.jpg",
+    "/Aircraft_Ground_Handling-1024x552.jpg",
+    "/zadar-airpor-1068x712.jpg",
+    "/istockphoto-1202298056-612x612.jpg",
+    "/Aviation-Refueling-Hose-750x430.jpg"
+  ]
+
+  // Create duplicated items for infinite loop
+  const duplicatedIndustries = [...industries, ...industries, ...industries]
+  const duplicatedImages = [...industryImages, ...industryImages, ...industryImages]
+
+  const [currentIndex, setCurrentIndex] = useState(industries.length) // Start at the middle set
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true)
   const sectionRef = useRef<HTMLElement>(null)
   const titleRef = useRef<HTMLHeadingElement>(null)
   const sliderRef = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
   const cardRefs = useRef<(HTMLDivElement | null)[]>([])
+  const autoPlayTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const pauseTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+
+  // Handle manual navigation with pause
+  const handleManualNavigation = useCallback((direction: 'next' | 'prev') => {
+    setIsAutoPlaying(false)
+    
+    // Clear any existing pause timeout
+    if (pauseTimeoutRef.current) {
+      clearTimeout(pauseTimeoutRef.current)
+    }
+
+    if (direction === 'next') {
+      setCurrentIndex((prev) => {
+        const newIndex = prev + 1
+        // Reset to middle set if we've gone too far
+        if (newIndex >= industries.length * 2) {
+          setTimeout(() => {
+            if (containerRef.current) {
+              containerRef.current.style.transition = 'none'
+              setCurrentIndex(industries.length)
+              setTimeout(() => {
+                if (containerRef.current) {
+                  containerRef.current.style.transition = 'transform 0.7s cubic-bezier(0.4, 0, 0.2, 1)'
+                }
+              }, 50)
+            }
+          }, 700)
+          return newIndex
+        }
+        return newIndex
+      })
+    } else {
+      setCurrentIndex((prev) => {
+        const newIndex = prev - 1
+        // Reset to middle set if we've gone too far back
+        if (newIndex < industries.length) {
+          setTimeout(() => {
+            if (containerRef.current) {
+              containerRef.current.style.transition = 'none'
+              setCurrentIndex(industries.length * 2 - 1)
+              setTimeout(() => {
+                if (containerRef.current) {
+                  containerRef.current.style.transition = 'transform 0.7s cubic-bezier(0.4, 0, 0.2, 1)'
+                }
+              }, 50)
+            }
+          }, 700)
+          return newIndex
+        }
+        return newIndex
+      })
+    }
+
+    // Resume auto-play after 5 seconds
+    pauseTimeoutRef.current = setTimeout(() => {
+      setIsAutoPlaying(true)
+    }, 5000)
+  }, [industries.length])
+
+  const nextSlide = () => handleManualNavigation('next')
+  const prevSlide = () => handleManualNavigation('prev')
+
+  // Auto-play slider
+  useEffect(() => {
+    if (!isAutoPlaying) return
+
+    autoPlayTimeoutRef.current = setInterval(() => {
+      setCurrentIndex((prev) => {
+        const newIndex = prev + 1
+        // Reset to middle set if we've gone too far
+        if (newIndex >= industries.length * 2) {
+          setTimeout(() => {
+            if (containerRef.current) {
+              containerRef.current.style.transition = 'none'
+              setCurrentIndex(industries.length)
+              setTimeout(() => {
+                if (containerRef.current) {
+                  containerRef.current.style.transition = 'transform 0.7s cubic-bezier(0.4, 0, 0.2, 1)'
+                }
+              }, 50)
+            }
+          }, 700)
+          return newIndex
+        }
+        return newIndex
+      })
+    }, 4000)
+
+    return () => {
+      if (autoPlayTimeoutRef.current) {
+        clearInterval(autoPlayTimeoutRef.current)
+      }
+    }
+  }, [isAutoPlaying, industries.length])
+
+  // Cleanup timeouts on unmount
+  useEffect(() => {
+    return () => {
+      if (autoPlayTimeoutRef.current) {
+        clearInterval(autoPlayTimeoutRef.current)
+      }
+      if (pauseTimeoutRef.current) {
+        clearTimeout(pauseTimeoutRef.current)
+      }
+    }
+  }, [])
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -44,14 +168,14 @@ export function IndustriesSection() {
         })
       }
 
-      // Animate cards
+      // Animate cards on initial load
       cardRefs.current.forEach((card, index) => {
-        if (card) {
+        if (card && index < industries.length) {
           gsap.from(card, {
             y: 60,
             opacity: 0,
             duration: 0.6,
-            delay: index * 0.1,
+            delay: (index % industries.length) * 0.1,
             ease: "power3.out",
             scrollTrigger: {
               trigger: card,
@@ -64,23 +188,28 @@ export function IndustriesSection() {
     }, sectionRef)
 
     return () => ctx.revert()
-  }, [currentIndex])
+  }, [industries.length])
 
-  const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % industries.length)
+  // Calculate visible items per viewport
+  const getVisibleItems = () => {
+    if (typeof window === 'undefined') return 5
+    if (window.innerWidth >= 1024) return 5 // lg: 5 items
+    if (window.innerWidth >= 768) return 3  // md: 3 items
+    return 1 // mobile: 1 item
   }
 
-  const prevSlide = () => {
-    setCurrentIndex((prev) => (prev - 1 + industries.length) % industries.length)
-  }
+  const [visibleItems, setVisibleItems] = useState(getVisibleItems())
 
-  // Auto-play slider
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % industries.length)
-    }, 4000)
-    return () => clearInterval(interval)
+    const handleResize = () => {
+      setVisibleItems(getVisibleItems())
+    }
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
   }, [])
+
+  const itemWidth = 100 / visibleItems
+  const displayIndex = currentIndex % industries.length
 
   return (
     <section ref={sectionRef} id="industries" className="py-20 bg-background overflow-hidden">
@@ -92,52 +221,54 @@ export function IndustriesSection() {
         </div>
 
         <div ref={sliderRef} className="relative">
-          {/* Modern Slider Container */}
+          {/* Modern Infinite Carousel Container */}
           <div className="relative overflow-hidden rounded-2xl">
             <div
+              ref={containerRef}
               className="flex transition-transform duration-700 ease-in-out"
               style={{
-                transform: `translateX(-${currentIndex * (100 / Math.min(5, industries.length))}%)`,
+                transform: `translateX(-${currentIndex * itemWidth}%)`,
               }}
             >
-              {industries.map((industry, index) => {
-                const imageIndex = (index % 8) + 1
-                return (
-                  <div
-                    key={index}
-                    ref={(el) => (cardRefs.current[index] = el)}
-                    className="min-w-full md:min-w-[calc(100%/3)] lg:min-w-[calc(100%/5)] px-3"
-                  >
-                    <div className="group cursor-pointer relative">
-                      <div className="relative overflow-hidden rounded-xl h-64 shadow-lg hover:shadow-2xl transition-all duration-300">
-                        <Image
-                          src={`/airport-industry-${imageIndex}.jpg?height=300&width=400&query=${industry.image}`}
-                          alt={industry.name}
-                          width={400}
-                          height={300}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                        />
-                        {/* Gradient Overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent group-hover:from-[#D4AF37]/90 group-hover:via-[#D4AF37]/70 group-hover:to-transparent transition-all duration-300" />
-                        
-                        {/* Content */}
-                        <div className="absolute inset-0 flex flex-col justify-end p-6">
-                          <div className="transform group-hover:translate-y-0 translate-y-2 transition-transform duration-300">
-                            <div className="w-12 h-1 bg-[#D4AF37] mb-3 rounded-full group-hover:w-16 transition-all duration-300" />
-                            <h3 className="text-white text-xl font-bold mb-2 group-hover:text-white">{industry.name}</h3>
-                            <p className="text-white/80 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                              Learn more →
-                            </p>
-                          </div>
+              {duplicatedIndustries.map((industry, index) => (
+                <div
+                  key={`${industry.name}-${index}`}
+                  ref={(el) => {
+                    if (index < industries.length) {
+                      cardRefs.current[index] = el
+                    }
+                  }}
+                  className="min-w-full md:min-w-[calc(100%/3)] lg:min-w-[calc(100%/5)] px-3"
+                >
+                  <div className="group cursor-pointer relative">
+                    <div className="relative overflow-hidden rounded-xl h-64 shadow-lg hover:shadow-2xl transition-all duration-300">
+                      <Image
+                        src={duplicatedImages[index]}
+                        alt={industry.name}
+                        width={400}
+                        height={300}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                      {/* Gradient Overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent group-hover:from-[#D4AF37]/90 group-hover:via-[#D4AF37]/70 group-hover:to-transparent transition-all duration-300" />
+                      
+                      {/* Content */}
+                      <div className="absolute inset-0 flex flex-col justify-end p-6">
+                        <div className="transform group-hover:translate-y-0 translate-y-2 transition-transform duration-300">
+                          <div className="w-12 h-1 bg-[#D4AF37] mb-3 rounded-full group-hover:w-16 transition-all duration-300" />
+                          <h3 className="text-white text-xl font-bold mb-2 group-hover:text-white">{industry.name}</h3>
+                          <p className="text-white/80 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            Learn more →
+                          </p>
                         </div>
-
-                        {/* Hover Effect Border */}
-                        <div className="absolute inset-0 border-2 border-transparent group-hover:border-[#D4AF37] rounded-xl transition-all duration-300" />
                       </div>
+
+                      {/* Hover Effect Border */}
+                      <div className="absolute inset-0 border-2 border-transparent group-hover:border-[#D4AF37] rounded-xl transition-all duration-300" />
                     </div>
                   </div>
-                )
-              })}
+                </div>
+              ))}
             </div>
           </div>
 
@@ -162,9 +293,19 @@ export function IndustriesSection() {
             {industries.map((_, index) => (
               <button
                 key={index}
-                onClick={() => setCurrentIndex(index)}
+                onClick={() => {
+                  const targetIndex = industries.length + index
+                  setCurrentIndex(targetIndex)
+                  setIsAutoPlaying(false)
+                  if (pauseTimeoutRef.current) {
+                    clearTimeout(pauseTimeoutRef.current)
+                  }
+                  pauseTimeoutRef.current = setTimeout(() => {
+                    setIsAutoPlaying(true)
+                  }, 5000)
+                }}
                 className={`h-2 rounded-full transition-all duration-300 ${
-                  index === currentIndex
+                  index === displayIndex
                     ? "w-8 bg-[#D4AF37]"
                     : "w-2 bg-muted-foreground/30 hover:bg-muted-foreground/50"
                 }`}

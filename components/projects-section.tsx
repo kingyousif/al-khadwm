@@ -52,22 +52,22 @@ export function ProjectsSection() {
     {
       title: "Ground Handling Operations Setup",
       date: "18Mar",
-      image: "airport ground handling operations equipment setup",
+      image: "/Aircraft_Ground_Handling-1024x552.jpg",
     },
     {
       title: "Baggage Handling System",
       date: "15Feb",
-      image: "airport baggage handling system installation",
+      image: "/Malaysia-Airlines-Lost-Baggage.jpg",
     },
     {
       title: "Ground Support Equipment Fleet",
       date: "28Feb",
-      image: "airport ground support equipment fleet management",
+      image: "/commercial-passenger-airplane-push-back-operation-211851194.jpg",
     },
     {
       title: "Aircraft Servicing Facility",
       date: "18Mar",
-      image: "airport aircraft servicing ground support operations",
+      image: "/airworthines-CAAM-750x436.jpg",
     },
   ]
 
@@ -89,7 +89,7 @@ export function ProjectsSection() {
             >
               <div className="relative h-64 overflow-hidden">
                 <img
-                  src={`/airport-terminal-modern-architecture-with-planes.jpg`}
+                  src={project.image}
                   alt={project.title}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                 />

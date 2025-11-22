@@ -71,7 +71,7 @@ export function AboutSection() {
           {/* Image side */}
           <div ref={imageRef} className="relative">
             <img
-              src="/airport-terminal-modern-architecture-with-planes.jpg"
+              src="/191017RAK_1980-1024x690.jpg"
               alt="Airport terminal"
               className="w-full h-[600px] object-cover rounded-sm shadow-lg"
             />
