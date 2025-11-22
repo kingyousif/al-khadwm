@@ -100,7 +100,7 @@ export function WhyUsSection() {
           {/* Image side */}
           <div ref={imageRef} className="relative">
             <img
-              src="/airport-staff-operations-professional-team.jpg?height=600&width=800&query=airport staff professional team operations"
+              src="/8aU3hlFS-IMG_8778-1024x683.jpg"
               alt="Airport staff"
               className="w-full h-[600px] object-cover rounded-sm shadow-lg"
             />
